@@ -12,7 +12,7 @@ class RidePrefService {
   ///
   /// List of past entered ride prefs. LIFO (most recents first)
   ///
-  static List<RidePref> ridePrefsHistory = fakeRidePrefs;   // TODO for now fake data
+  static List<RidePref> ridePrefsHistory = fakeRidePrefs;
 
   static RidePref? currentRidePref;
  
