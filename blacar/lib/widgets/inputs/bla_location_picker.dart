@@ -29,7 +29,9 @@ class _BlaLocationPickerState extends State<BlaLocationPicker> {
     super.initState();
 
     if (widget.initLocation != null) {
-      filteredLocations = getLocationsFor(widget.initLocation!.name);
+      // filteredLocations = getLocationsFor(widget.initLocation!.name);
+      String city = widget.initLocation!.name;
+      filteredLocations = LocationsService.instance.getLocationsFor(city);
     }
   }
 
@@ -46,7 +48,8 @@ class _BlaLocationPickerState extends State<BlaLocationPicker> {
 
     if (searchText.length > 1) {
       // We start to search from 2 characters only.
-      newSelection = getLocationsFor(searchText);
+      // newSelection = getLocationsFor(searchText);
+      newSelection = LocationsService.instance.getLocationsFor(searchText);
     }
 
     setState(() {
@@ -54,12 +57,12 @@ class _BlaLocationPickerState extends State<BlaLocationPicker> {
     });
   }
 
-  List<Location> getLocationsFor(String text) {
-    return LocationsService.availableLocations
-        .where((location) =>
-            location.name.toUpperCase().contains(text.toUpperCase()))
-        .toList();
-  }
+  // List<Location> getLocationsFor(String text) {
+  //   return LocationsService.availableLocations
+  //       .where((location) =>
+  //           location.name.toUpperCase().contains(text.toUpperCase()))
+  //       .toList();
+  // }
 
   @override
   Widget build(BuildContext context) {
