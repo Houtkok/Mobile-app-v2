@@ -23,17 +23,20 @@ class RideTile extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Card(
-        child: Column(
-          children: [
-            Text(departure,
-                style: BlaTextStyles.label.copyWith(color: BlaColors.textLight)),
-            Text(arrival,
-                style: BlaTextStyles.label.copyWith(color: BlaColors.textLight)),
-            Text(time,
-                style: BlaTextStyles.label.copyWith(color: BlaColors.textLight)),
-            Text(price,
-                style: BlaTextStyles.label.copyWith(color: BlaColors.textLight)),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text(departure,
+                  style: BlaTextStyles.label.copyWith(color: BlaColors.textLight)),
+              Text(arrival,
+                  style: BlaTextStyles.label.copyWith(color: BlaColors.textLight)),
+              Text(time,
+                  style: BlaTextStyles.label.copyWith(color: BlaColors.textLight)),
+              Text(price,
+                  style: BlaTextStyles.label.copyWith(color: BlaColors.textLight)),
+            ],
+          ),
         ),
       ),
     );

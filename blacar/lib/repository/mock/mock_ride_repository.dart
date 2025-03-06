@@ -5,6 +5,7 @@ import 'package:week_3_blabla_project/model/ride_pref/ride_pref.dart';
 import 'package:week_3_blabla_project/model/user/user.dart';
 import 'package:week_3_blabla_project/repository/mock/mock_location_repository.dart';
 import 'package:week_3_blabla_project/repository/ride_repository.dart';
+import 'package:week_3_blabla_project/utils/ride_utils.dart';
 
 class MockRideRepository extends RideRepository {
   final List<Ride> _allRides = [];
@@ -17,9 +18,9 @@ class MockRideRepository extends RideRepository {
 
     Ride ride1 = Ride(
         departureLocation: locationRepository.btb,
-        departureDate: DateTime.now().copyWith(hour: 20, minute: 30),
+        departureDate: DateTime.now().add(Duration(days: 1, hours: 8)),
         arrivalLocation: locationRepository.sr,
-        arrivalDateTime: DateTime.now().copyWith(hour: 20, minute: 30),
+        arrivalDateTime: DateTime.now().add(Duration(days: 2, hours: 8)),
         driver: hout,
         availableSeats: 2,
         pricePerSeat: 10,
@@ -27,18 +28,18 @@ class MockRideRepository extends RideRepository {
 
     Ride ride2 = Ride(
         departureLocation: locationRepository.btb,
-        departureDate: DateTime.now().copyWith(hour: 20, minute: 30),
+        departureDate: DateTime.now().add(Duration(days: 2, hours: 8)),
         arrivalLocation: locationRepository.sr,
-        arrivalDateTime: DateTime.now().copyWith(hour: 20, minute: 30),
+        arrivalDateTime: DateTime.now().add(Duration(days: 2, hours: 8)),
         driver: hong,
         availableSeats: 0,
         pricePerSeat: 10);
 
     Ride ride3 = Ride(
         departureLocation: locationRepository.btb,
-        departureDate: DateTime.now().copyWith(hour: 20, minute: 30),
+        departureDate: DateTime.now().add(Duration(days: 1, hours: 8)),
         arrivalLocation: locationRepository.sr,
-        arrivalDateTime: DateTime.now().copyWith(hour: 20, minute: 30),
+        arrivalDateTime: DateTime.now().add(Duration(days: 2, hours: 8)),
         driver: hout,
         availableSeats: 1,
         pricePerSeat: 10,
@@ -46,18 +47,18 @@ class MockRideRepository extends RideRepository {
 
     Ride ride4 = Ride(
         departureLocation: locationRepository.btb,
-        departureDate: DateTime.now().copyWith(hour: 20, minute: 30),
+        departureDate: DateTime.now().add(Duration(days: 1, hours: 8)),
         arrivalLocation: locationRepository.sr,
-        arrivalDateTime: DateTime.now().copyWith(hour: 20, minute: 30),
+        arrivalDateTime: DateTime.now().add(Duration(days: 2, hours: 8)),
         driver: hong,
         availableSeats: 2,
         pricePerSeat: 10);
 
     Ride ride5 = Ride(
         departureLocation: locationRepository.btb,
-        departureDate: DateTime.now().copyWith(hour: 20, minute: 30),
+        departureDate: DateTime.now().add(Duration(days: 1, hours: 8)),
         arrivalLocation: locationRepository.sr,
-        arrivalDateTime: DateTime.now().copyWith(hour: 20, minute: 30),
+        arrivalDateTime: DateTime.now().add(Duration(days: 2, hours: 8)),
         driver: hout,
         availableSeats: 1,
         pricePerSeat: 10,
@@ -67,44 +68,13 @@ class MockRideRepository extends RideRepository {
   }
 
   @override
+  List<Ride> getRide() {
+    return _allRides;
+  }
+
+  @override
   List<Ride> getRidesFor(RidePreference pref, RideFilter? filter, RideSortType? sortType) {
-    List<Ride> rides = _allRides
-        .where((ride) => _rideMatchesPreferences(ride, pref, filter))
-        .toList();
-        if (sortType != null) {
-      switch (sortType) {
-        case RideSortType.departureTime:
-          rides.sort((a, b) => a.departureDate.compareTo(b.departureDate));
-          break;
-        case RideSortType.arrivalTime:
-          rides.sort((a, b) => a.arrivalDateTime.compareTo(b.arrivalDateTime));
-          break;
-        case RideSortType.price:
-          rides.sort((a, b) => a.pricePerSeat.compareTo(b.pricePerSeat));
-          break;
-      }
-    }
-    return rides;
+    return filterAndSortRides(_allRides, pref, filter, sortType);
   }
-
-  bool _rideMatchesPreferences(
-      Ride ride, RidePreference prefs, RideFilter? filter) {
-    // departure and arraival mathc
-    if (ride.departureLocation != prefs.departure ||
-        ride.arrivalLocation != prefs.arrival) {
-      return false;
-    }
-
-    //filter for pet
-    if (filter != null && filter.onlyPets && !ride.allowPets) {
-      return false;
-    }
-
-    //to ensure available seats
-    if (ride.availableSeats <= 0) {
-      return false;
-    }
-
-    return true;
-  }
+  
 }
