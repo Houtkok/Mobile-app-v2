@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:week_3_blabla_project/screens/rides/widgets/ride_filter.dart';
+import 'package:week_3_blabla_project/model/ride/ride_filter.dart';
+import 'package:week_3_blabla_project/model/ride/ride_sort_type.dart';
 import 'widgets/ride_pref_bar.dart';
  
 import '../../dummy_data/dummy_data.dart';
@@ -26,7 +27,8 @@ class _RidesScreenState extends State<RidesScreen> {
   RidePreference currentPreference  = fakeRidePrefs[0];   // TODO 1 :  We should get it from the service
 
   RideFilter curFilter = RideFilter();
-  List get matchRides => RidesService.instance.getRidesFor(currentPreference, curFilter);
+  RideSortType? sortType;
+  List get matchRides => RidesService.instance.getRidesFor(currentPreference, curFilter, sortType);
 
   void onBackPressed() {
     Navigator.of(context).pop();     //  Back to the previous view

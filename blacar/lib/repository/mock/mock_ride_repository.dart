@@ -1,9 +1,10 @@
 import 'package:week_3_blabla_project/model/ride/ride.dart';
+import 'package:week_3_blabla_project/model/ride/ride_filter.dart';
+import 'package:week_3_blabla_project/model/ride/ride_sort_type.dart';
 import 'package:week_3_blabla_project/model/ride_pref/ride_pref.dart';
 import 'package:week_3_blabla_project/model/user/user.dart';
 import 'package:week_3_blabla_project/repository/mock/mock_location_repository.dart';
 import 'package:week_3_blabla_project/repository/ride_repository.dart';
-import 'package:week_3_blabla_project/screens/rides/widgets/ride_filter.dart';
 
 class MockRideRepository extends RideRepository {
   final List<Ride> _allRides = [];
@@ -66,10 +67,24 @@ class MockRideRepository extends RideRepository {
   }
 
   @override
-  List<Ride> getRidesFor(RidePreference pref, RideFilter? filter) {
-    return _allRides
+  List<Ride> getRidesFor(RidePreference pref, RideFilter? filter, RideSortType? sortType) {
+    List<Ride> rides = _allRides
         .where((ride) => _rideMatchesPreferences(ride, pref, filter))
         .toList();
+        if (sortType != null) {
+      switch (sortType) {
+        case RideSortType.departureTime:
+          rides.sort((a, b) => a.departureDate.compareTo(b.departureDate));
+          break;
+        case RideSortType.arrivalTime:
+          rides.sort((a, b) => a.arrivalDateTime.compareTo(b.arrivalDateTime));
+          break;
+        case RideSortType.price:
+          rides.sort((a, b) => a.pricePerSeat.compareTo(b.pricePerSeat));
+          break;
+      }
+    }
+    return rides;
   }
 
   bool _rideMatchesPreferences(
